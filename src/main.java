@@ -11,15 +11,25 @@ public class main {
      */
 
      public static void main(String[] args) throws IOException {
-        System.out.println("ça marche pas");
-         System.out.println("s"=="s");
-       // Dico dico= new Dico();
 
-         String mot1 = "boulle", mot2 = "bil";
+      //   Dico dico= new Dico();
+        /* Inscrire ici le mot à chercher : */
+         ArrayList<String> trigrammes = createTrigrammes("bateau");
 
-         System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
+       //  String mot1 = "boulle", mot2 = "bil";
+
+      //   System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
 
 
+    }
+
+    private static ArrayList<String> createTrigrammes(String word) {
+         ArrayList<String> trigrammes = new ArrayList();
+         for(int i=0; i<word.length()-3; i++) {
+             trigrammes.add(word.substring(i, i + 3));
+             System.out.println(trigrammes.get(i));
+         }
+         return trigrammes;
     }
 
 

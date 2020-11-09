@@ -12,9 +12,11 @@ FAIT -> distanceOfWords
 3. implémenter la phase de sélection basée sur les trigrammes communs,
 
 Lecture du mot que l'on écrit
--> construction des trigrammes :   bateau = {bat, ate, tea, eau}
+FAIT -> construction des trigrammes :   bateau = {bat, ate, tea, eau}
 /* Retourne un tableau de trigrammes */
 public Arraylist() getTrigramme(String mot)
+
+4. Compare le mot s'il possède un trigramme
 
 -> Récupérer listes des mot ayant un trigramme similaire => stocker dans une liste
 public boolean hasTrigramme(String mot, String trigramme)
