@@ -22,7 +22,36 @@ public class main {
 
 
     }
+    //au vue de la fonction peu être inutile?
+    public boolean hasTrigramme(String mot, String trigramme){
+         return mot.contains(trigramme);
+    }
 
+    /**
+     *  Retourne un tableau des lites des mots ayant un trigramme commun
+     *  en fonction d'un tableau de trigramme donné
+     * @param trigrammes
+     * @return
+     * @throws IOException
+     */
+    public ArrayList<ArrayList<String>> arrayListsOfSimilarsTrigrammes(ArrayList<String> trigrammes) throws IOException {
+        ArrayList<ArrayList<String>> listsOfSimilarsTrigrammes = new ArrayList<>();
+         for(String trigramme : trigrammes){
+             listsOfSimilarsTrigrammes.add(getListOfWordsToDico(trigramme));
+         }
+         return listsOfSimilarsTrigrammes;
+    }
+
+    private ArrayList<String> getListOfWordsToDico(String trigramme) throws IOException {
+        Dico dico = new Dico();
+        for(String word : dico.)
+    }
+
+    /**
+     * Create an array of trigramme of word
+     * @param word
+     * @return
+     */
     private static ArrayList<String> createTrigrammes(String word) {
          ArrayList<String> trigrammes = new ArrayList();
          for(int i=0; i<word.length()-3; i++) {
@@ -31,7 +60,6 @@ public class main {
          }
          return trigrammes;
     }
-
 
     public static int distanceOfWords(String mot1, String mot2){
         /** 4) Calculer la distance entre deux mots, voir algo td4 exercice 2 **/
