@@ -27,11 +27,8 @@ public class Dico {
     }*/
 
     public ArrayList<String> similarWords(String word, int number_of_words) throws IOException {
-//        System.out.println("word======="+word);
         ArrayList<String> trigrammes = createTrigrammes(word);
-//        System.out.println("trigrammes======="+trigrammes);
         ArrayList<ArrayList<String>> lists = arrayListsOfSimilarsTrigrammes(trigrammes);
-//        System.out.println("lists======="+lists.size());
         return filterNumberOfdWord(lists, number_of_words);
     }
 
@@ -132,26 +129,14 @@ public class Dico {
                 weightSort.get(weight.get(key)).add(key);
             }
         }
-//        System.out.println("weightSort=>=>=>=>=>=>=>"+weightSort.size());
+
         ArrayList<String> numberOfWords = new ArrayList<>();
         while(numberOfWords.size()<number_of_words && max!=0) {
-            //@todo à retirer un fois terminé
-//            System.out.println("numberOfWords.size(): " + numberOfWords.size() + "\n" +
-//                    "number_of_words: " + number_of_words + "\n" + "max:" + max);
-//            System.out.println("-----------------Key----------------\n"+keys.size()+"--------------------------------\n"+"mac:"+max);
-            if (keysInt.contains(max)) {
-//                 System.out.println("weightSort.get(max).size():" + weightSort.get(max).size());
-                for (int i = 0; i < weightSort.get(max).size() && numberOfWords.size() < number_of_words; i++) {
-                    //@todo à retirer un fois terminé
-//                    System.out.println("max:" + max + " i: " + i + " weightSort(max): " + weightSort.size() +
-//                           " weightSort(i)" + weightSort.get(max).size());
+            if (keysInt.contains(max))
+                for (int i = 0; i < weightSort.get(max).size() && numberOfWords.size() < number_of_words; i++)
                     numberOfWords.add(weightSort.get(max).get(i));
-                }
-            }
             max--;
-
         }
-//        System.out.println("numberOfWords=>=>=>=>=>=>=>"+numberOfWords.size());
         return  numberOfWords;
     }
 
@@ -218,35 +203,27 @@ public class Dico {
         HashMap<Integer,ArrayList<String>> distances = new HashMap<>();
         List<Integer> keys = new ArrayList<>();
 
-    //    System.out.println("words:"+words);
         for(String word : words) {
-          //  System.out.println("sa bug par là ? ");
             int key = distanceOfWords(word, originalWord);
             if(!distances.containsKey(key)) {
                 ArrayList<String> mots = new ArrayList<>();
                 mots.add(word);
                 distances.put(key, mots);
                 keys.add(key);
-            }else {
-//                System.out.println("key:"+ key +"\n word:" +word +"\n distances:" + distances);
-//                distances.get(key).add(word);
-            }
+            }else
+                distances.get(key).add(word);
+
         }
         keys.sort(Collections.reverseOrder());
         ArrayList<String> result = new ArrayList<>();
-//        System.out.println("result.size()"+result.size()+"\n (result.size()<precision):"+(result.size()<precision)
-//        +"\nkeys.size():"+keys.size()+"\n");
-        for(int i=1; i<keys.size() && result.size()<precision; i++) {
-            if(keys.contains(i)) {
-             //   System.out.println("i:" + i + " distances(i):" + distances.size() + " distances.get(i)(k):" + distances.get(i));
+        for(int i=1; i<keys.size() && result.size()<precision; i++)
+            if(keys.contains(i))
                 for (int k = 0; k < distances.get(keys.get(i)).size()
                         && result.size() < precision
                         && k < distances.get(i).size(); k++) {
-                    //   System.out.println("i:" + i + " k:" + k + " distances(i):" + distances.size() + " distances.get(i)(k):" + distances.get(i).size());
                     result.add(distances.get(i).get(k));
                 }
-            }
-        }
+
         return result;
     }
 
@@ -262,16 +239,14 @@ public class Dico {
     public void correctWord(String stringOriginal) throws IOException{
 
         if(isContain(stringOriginal))
-            System.out.println(stringOriginal);
+            System.out.println(stringOriginal+":correct:");
         else{
             ArrayList<String> wordsSimilar = similarWords(stringOriginal,100);
-//            System.out.println("baahhh ou regarde ça!"+wordsSimilar);
             ArrayList<String> strings =  foundBestSimilars(wordsSimilar,5,stringOriginal);
-           System.out.println(strings);
             String suggestion ="";
-            for(String word : strings){
-                suggestion = suggestion+" ; "+word;
-            }
+            for(String word : strings)
+                suggestion = word+" ; "+ suggestion;
+            suggestion = suggestion.substring(0,suggestion.length()-2);
             System.out.println(stringOriginal+" :faux: suggestion { "+suggestion+"}");
         }
     }
