@@ -40,7 +40,7 @@ public class Dico {
      */
     private static ArrayList<String> createTrigrammes(String word) {
         ArrayList<String> trigrammes = new ArrayList();
-        for(int i=0; i<word.length()-3; i++) {
+        for(int i=0; i<word.length()-2; i++) {
             trigrammes.add(word.substring(i, i + 3));
         }
         return trigrammes;

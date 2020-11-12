@@ -12,19 +12,19 @@ public class main {
 
      public static void main(String[] args) throws IOException {
 
-         Dico dico= new Dico();
-
-
-        /* Inscrire ici le mot à chercher : */
-         ArrayList<String> trigrammes = createTrigrammes("bateau");
-
-         ArrayList<String> similars = dico.similarWords("bateau",10);
-
-         for(String similar : similars)
-             System.out.println(similar);
-         //  String mot1 = "boulle", mot2 = "bil";
-         // System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
-
+//         Dico dico= new Dico();
+//
+//
+//        /* Inscrire ici le mot à chercher : */
+//         ArrayList<String> trigrammes = createTrigrammes("bateau");
+//
+//         ArrayList<String> similars = dico.similarWords("bateau",10);
+//
+//         for(String similar : similars)
+//             System.out.println(similar);
+//         //  String mot1 = "boulle", mot2 = "bil";
+//         // System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
+         createTrigrammesTEST();
 
     }
     //au vue de la fonction peu être inutile?
@@ -40,7 +40,7 @@ public class main {
      */
     private static ArrayList<String> createTrigrammes(String word) {
          ArrayList<String> trigrammes = new ArrayList();
-         for(int i=0; i<word.length()-3; i++) {
+         for(int i=0; i<word.length()-2; i++) {
              trigrammes.add(word.substring(i, i + 3));
              System.out.println(trigrammes.get(i));
          }
@@ -100,7 +100,21 @@ public class main {
         return  poid;
     }
 
-    public void createTrigrammesTEST(){
-        /* à faire */
+    public static void createTrigrammesTEST(){
+        ArrayList<String> words= createTrigrammes("bateau");
+        ArrayList<String> results =new ArrayList<>();
+        results.add("bat");
+        results.add("ate");
+        results.add("tea");
+        results.add("eau");
+        printArray(words);
+        System.out.println("createTrigrammesTEST: "+(words == results));
+    }
+
+    public static void printArray(ArrayList<String> arrayList){
+        System.out.println("===============================");
+        for(Object object: arrayList)
+            System.out.println(object);
+        System.out.println("===============================");
     }
 }
