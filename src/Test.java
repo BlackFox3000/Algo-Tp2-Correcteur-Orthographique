@@ -1,14 +1,15 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Test {
 
     public Test() throws IOException {
        // createTrigrammesTEST();
+        // buildTEST();
        // getListWordByTrigrammeTEST();
-         buildTEST();
-
+        arrayListsOfSimilarsTrigrammesTEST();
     }
 
 
@@ -60,7 +61,12 @@ public class Test {
         return wordsByTrigramme;
 
     }
+
+
     // ========== Les fonctions de TEST ==========
+    /**
+     * test : ok
+     */
     public static void createTrigrammesTEST(){
         ArrayList<String> words= createTrigrammes("bateau");
         ArrayList<String> results =new ArrayList<>();
@@ -71,7 +77,9 @@ public class Test {
         printArray(words);
         System.out.println("createTrigrammesTEST: "+(words == results));
     }
-
+    /**
+     * test : ok
+     */
     private static void buildTEST() throws IOException {
         // Dico dico = new Dico("src/test.txt");
         HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
@@ -81,7 +89,9 @@ public class Test {
 
 
     }
-
+    /**
+     * test : ok
+     */
     private void getListWordByTrigrammeTEST(){
         HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
         String[] test = {"cote" ,"tacot", "abricot"};
@@ -92,7 +102,22 @@ public class Test {
         wordsByTrigramme.put("bat", createArrayWith(test3));
         printArray(getListWordByTrigramme("bat",wordsByTrigramme));
     }
-
+    /**
+     * test : ?
+     */
+    private void arrayListsOfSimilarsTrigrammesTEST() throws IOException {
+        ArrayList<String> trigrammes= new ArrayList<>() ;
+        trigrammes.add("bat");
+        trigrammes.add("cot");
+        HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
+        String[] test = {"cote" ,"tacot", "abricot"};
+        wordsByTrigramme.put("cot", createArrayWith(test));
+        String[] test2 = {"motard" ,"batard", "tetard"};
+        wordsByTrigramme.put("tard", createArrayWith(test2));
+        String[] test3 = {"bateau" ,"batard", "batiment"};
+        wordsByTrigramme.put("bat", createArrayWith(test3));
+        System.out.println( arrayListsOfSimilarsTrigrammes( trigrammes, wordsByTrigramme) );
+    }
 
     // ============= Tools =========
 
@@ -103,10 +128,7 @@ public class Test {
         System.out.println("===============================");
     }
     public static ArrayList<String> createArrayWith(String[] strings){
-        ArrayList<String> arrayList = new ArrayList<>();
-        for(String string : strings)
-            arrayList.add(string);
-        return arrayList;
+        return new ArrayList<>(Arrays.asList(strings));
     }
 
 
