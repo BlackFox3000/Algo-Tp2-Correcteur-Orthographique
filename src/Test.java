@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Test {
 
     public Test() throws IOException {
+       // createTrigrammesTEST();
+        getListWordByTrigrammeTEST();
 
-        createTrigrammesTEST();
-        buildTEST();
     }
 
 
@@ -26,6 +27,24 @@ public class Test {
     }
 
 
+    /**
+     *  Retourne un tableau des listes des mots ayant un trigramme commun
+     *  en fonction d'un tableau de trigramme donné
+     * @param trigrammes
+     * @return
+     * @throws IOException
+     */
+    public ArrayList<ArrayList<String>> arrayListsOfSimilarsTrigrammes(ArrayList<String> trigrammes, HashMap<String, ArrayList<String>> wordsByTrigramme) throws IOException {
+        ArrayList<ArrayList<String>> listsOfSimilarsTrigrammes = new ArrayList<>();
+        for(String trigramme : trigrammes){
+            listsOfSimilarsTrigrammes.add(getListWordByTrigramme(trigramme, wordsByTrigramme));
+        }
+        return listsOfSimilarsTrigrammes;
+    }
+
+    public ArrayList<String> getListWordByTrigramme(String trigramme, HashMap<String, ArrayList<String>> wordsByTrigramme) {
+        return wordsByTrigramme.get(trigramme);
+    }
 
     // ========== Les fonctions de TEST ==========
     public static void createTrigrammesTEST(){
@@ -43,6 +62,18 @@ public class Test {
         Dico dico = new Dico("src/test.txt");
     }
 
+    private void getListWordByTrigrammeTEST(){
+        HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
+        String[] test = {"cote" ,"tacot", "abricot"};
+        wordsByTrigramme.put("cot", createArrayWith(test));
+        String[] test2 = {"motard" ,"batard", "tetard"};
+        wordsByTrigramme.put("tard", createArrayWith(test2));
+        String[] test3 = {"bateau" ,"batard", "batiment"};
+        wordsByTrigramme.put("bat", createArrayWith(test3));
+        printArray(getListWordByTrigramme("bat",wordsByTrigramme));
+    }
+
+
     // ============= Tools =========
 
     public static void printArray(ArrayList<String> arrayList){
@@ -50,6 +81,12 @@ public class Test {
         for(Object object: arrayList)
             System.out.println(object);
         System.out.println("===============================");
+    }
+    public static ArrayList<String> createArrayWith(String[] strings){
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(String string : strings)
+            arrayList.add(string);
+        return arrayList;
     }
 
 
