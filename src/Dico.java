@@ -23,14 +23,14 @@ public class Dico {
         }
     }
 
-    public boolean content(String word){
+    /*public boolean content(String word){
         return words.contains(word);
-    }
+    }*/
 
     public ArrayList<String> similarWords(String word, int number_of_words) throws IOException {
         ArrayList<String> trigrammes = createTrigrammes(word);
         ArrayList<ArrayList<String>> lists = arrayListsOfSimilarsTrigrammes(trigrammes);
-        return filterHundredWord(lists, number_of_words);
+        return filterNumberOfdWord(lists, number_of_words);
     }
 
     /**
@@ -63,32 +63,42 @@ public class Dico {
         }
     }
 
+    /**
+     * Retourne une liste de mots comportant le trigramme donnée
+     * @param trigramme
+     * @return
+     */
     public ArrayList<String> getListWordByTrigramme(String trigramme) {
         return wordsByTrigramme.get(trigramme);
     }
 
 
     /**
-     *  Retourne un tableau des lites des mots ayant un trigramme commun
+     *  Retourne un tableau des listes des mots ayant un trigramme commun
      *  en fonction d'un tableau de trigramme donné
      * @param trigrammes
      * @return
      * @throws IOException
      */
     public ArrayList<ArrayList<String>> arrayListsOfSimilarsTrigrammes(ArrayList<String> trigrammes) throws IOException {
-        Dico dico = new Dico();
         ArrayList<ArrayList<String>> listsOfSimilarsTrigrammes = new ArrayList<>();
         for(String trigramme : trigrammes){
-            listsOfSimilarsTrigrammes.add(dico.getListWordByTrigramme(trigramme));
+            listsOfSimilarsTrigrammes.add(getListWordByTrigramme(trigramme));
         }
         return listsOfSimilarsTrigrammes;
     }
 
-    public ArrayList<String> filterHundredWord(ArrayList<ArrayList<String>> lists ,int number_of_words){
+    /**
+     * Retourne un tableau de X mots les plus apperçut dans lists
+     * @param lists
+     * @param number_of_words
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> filterNumberOfdWord(ArrayList<ArrayList<String>> lists , int number_of_words){
         HashMap <String,Integer> weight = new HashMap<>();
         HashMap <Integer, ArrayList<String>> weightSort = new HashMap<>();
         ArrayList<String> keys = new ArrayList<>();
-        int max=0;
+        int max=1;
 
         //Crée un hashmap< word, count>
         for(ArrayList<String> list : lists){
@@ -104,7 +114,8 @@ public class Dico {
                 }
             }
         }
-        //inverse hasmap< mot, nb>  <nb, mot>
+
+        //inverse hasmap< mot, nb>  <nb, mots>
         for(String key: keys){
             //on regarde si le poid possède déjà un clef
             if(! weightSort.containsKey(weight.get(key))) {
@@ -117,14 +128,13 @@ public class Dico {
             }
         }
 
-        ArrayList<String> hundredWords = new ArrayList<>();
-        while(hundredWords.size()<number_of_words || max==-1){
-            ArrayList<String> test = weightSort.get(max);
-            for(int i=0; i<  weightSort.get(max).size() ; i++)
-                hundredWords.add( weightSort.get(max).get(i));
+        ArrayList<String> numberOfWords = new ArrayList<>();
+        while(numberOfWords.size()<number_of_words || max==-1){
+            for(int i=0; i<  weightSort.get(max).size() && numberOfWords.size()<number_of_words  ; i++)
+                numberOfWords.add( weightSort.get(max).get(i));
             max--;
         }
-        return  hundredWords;
+        return  numberOfWords;
     }
 
 

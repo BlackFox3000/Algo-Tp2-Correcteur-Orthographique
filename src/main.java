@@ -100,4 +100,7 @@ public class main {
         return  poid;
     }
 
+    public void createTrigrammesTEST(){
+        /* à faire */
+    }
 }
