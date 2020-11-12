@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Dico {
 
@@ -177,11 +175,11 @@ public class Dico {
             for (int j = 0; j < mot2.length(); j++) {
                 int poid = getLittleWeight(nbOpperations, i, j);
 
-                System.out.println("comparaison entre : "+mot1.charAt(i)+" et "+ mot2.charAt(j));
+             //   System.out.println("comparaison entre : "+mot1.charAt(i)+" et "+ mot2.charAt(j));
                 // Annalise de la comparaison de lettre
                 if (mot1.charAt(i) != mot2.charAt(j))
                     poid++;
-                System.out.println("case:"+poid);
+             //   System.out.println("case:"+poid);
                 //attribution du poid nécessaire à cette position
                 nbOpperations[i].add(poid);
             }
@@ -193,13 +191,63 @@ public class Dico {
     /**
      * Retourne un nombre "precision" de mot parmis une liste en fonction de leur distance
      * @param words liste de mots
-     * @param nb_worlds nombre de mot aux trigrammes similaires
-     * @param précision nombre de mot donné en correction
+     * @param precision nombre de mot donné en correction
      * @return
      */
-    public ArrayList<String> foundBestSimilars(ArrayList<String> words, int nb_worlds , int précision){
-        //HashMap;
-        return words;
+    public ArrayList<String> foundBestSimilars(ArrayList<String> words , int precision,String originalWord){
+        HashMap<Integer,ArrayList<String>> distances = new HashMap<>();
+        List<Integer> keys = new ArrayList<>();
+
+        for(String word : words) {
+            int key = distanceOfWords(word, originalWord);
+            if(!distances.containsKey(key)) {
+                ArrayList<String> mots = new ArrayList<>();
+                mots.add(word);
+                distances.put(key, mots);
+                keys.add(key);
+            }else {
+                System.out.println("key:"+ key +"\n word:" +word +"\n distances:" + distances);
+                distances.get(key).add(word);
+            }
+        }
+        keys.sort(Collections.reverseOrder());
+        ArrayList<String> result = new ArrayList<>();
+        for(int i=0; i<keys.size() && result.size()<precision; i++)
+            for(int k=0; k<distances.get(keys.get(i)).size() && result.size()<precision && k<distances.get(i).size(); k++) {
+                System.out.println("i:"+i+" k:"+k+" distances(i):"+distances.size()+" distances.get(i)(k):"+distances.get(i).size());
+                result.add(distances.get(i).get(k));
+            }
+        return result;
     }
 
+    /**
+     * Est ce que le mot est présent dans le dictionaire
+     * @param string
+     * @return
+     */
+    public boolean isContain(String string){
+        return words.contains(string);
+    }
+
+    public void correctWord(String stringOriginal) throws IOException{
+
+        if(isContain(stringOriginal))
+            System.out.println(stringOriginal);
+        else{
+            System.out.println(stringOriginal+"suggestion : ");
+            ArrayList<String> wordSimilar = similarWords(stringOriginal,100);
+
+            ArrayList<String> strings =  foundBestSimilars(wordSimilar,5,stringOriginal);
+            for(String word : strings){
+                System.out.println(word);
+            }
+        }
+    }
+
+    public void correctWords(String filename) throws IOException {
+        Buffer document = new Buffer();
+        ArrayList<String> lignes = document.main(filename);
+        for (String word : lignes)
+            correctWord(word);
+    }
 }

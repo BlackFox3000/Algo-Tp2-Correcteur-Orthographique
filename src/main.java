@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class main {
 
@@ -16,11 +17,17 @@ public class main {
         long start = System.nanoTime();
          Dico dico= new Dico("src/dico.txt");
          ArrayList<String> similars = dico.similarWords("bateau",100);
+         ArrayList<String> corrects = dico.foundBestSimilars(similars,5,"bateau");
+         for(String correct : corrects)
+             System.out.println(correct);
 
-         for(String similar : similars)
-             System.out.println(similar);
+         dico.correctWord("bateau");
+
+         dico.correctWords("src/fautes.txt");
+
          long end = System.nanoTime();
-         System.out.println("Temp:"+(end-start));
+         long duration =TimeUnit.SECONDS.convert( (end-start), TimeUnit.NANOSECONDS ) ;
+         System.out.println("Temp:"+duration);
          //  String mot1 = "boulle", mot2 = "bil";
          // System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
 
