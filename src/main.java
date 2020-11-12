@@ -28,6 +28,7 @@ public class main {
          long end = System.nanoTime();
          long duration =TimeUnit.SECONDS.convert( (end-start), TimeUnit.NANOSECONDS ) ;
          System.out.println("Temp:"+duration);
+         
          //  String mot1 = "boulle", mot2 = "bil";
          // System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
 

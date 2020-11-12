@@ -4,7 +4,7 @@ import java.util.*;
 public class Dico {
 
     //peu être à retirer ?
-    private HashSet words = new HashSet();
+    public HashSet words = new HashSet();
     private HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
 
     public Dico(String fileName) throws IOException {
@@ -27,8 +27,11 @@ public class Dico {
     }*/
 
     public ArrayList<String> similarWords(String word, int number_of_words) throws IOException {
+//        System.out.println("word======="+word);
         ArrayList<String> trigrammes = createTrigrammes(word);
+//        System.out.println("trigrammes======="+trigrammes);
         ArrayList<ArrayList<String>> lists = arrayListsOfSimilarsTrigrammes(trigrammes);
+//        System.out.println("lists======="+lists.size());
         return filterNumberOfdWord(lists, number_of_words);
     }
 
@@ -100,8 +103,9 @@ public class Dico {
 
         //Crée un hashmap< word, count>
         for(ArrayList<String> list : lists){
+            if(list!=null)
             for(String word : list){
-                if(! weight.containsKey(word)) {
+                if( ! weight.containsKey(word)) {
                     weight.put(word, 1);
                     keys.add(word);
                 }
@@ -113,6 +117,8 @@ public class Dico {
             }
         }
 
+
+        ArrayList<Integer> keysInt = new ArrayList<>();
         //inverse hasmap< mot, nb>  <nb, mots>
         for(String key: keys){
             //on regarde si le poid possède déjà un clef
@@ -120,18 +126,32 @@ public class Dico {
                 ArrayList<String> list = new ArrayList<>();
                 list.add(key);
                 weightSort.put(weight.get(key),list);
+                keysInt.add(weight.get(key));
             }
             else {
                 weightSort.get(weight.get(key)).add(key);
             }
         }
-
+//        System.out.println("weightSort=>=>=>=>=>=>=>"+weightSort.size());
         ArrayList<String> numberOfWords = new ArrayList<>();
-        while(numberOfWords.size()<number_of_words || max==-1){
-            for(int i=0; i<  weightSort.get(max).size() && numberOfWords.size()<number_of_words  ; i++)
-                numberOfWords.add( weightSort.get(max).get(i));
+        while(numberOfWords.size()<number_of_words && max!=0) {
+            //@todo à retirer un fois terminé
+//            System.out.println("numberOfWords.size(): " + numberOfWords.size() + "\n" +
+//                    "number_of_words: " + number_of_words + "\n" + "max:" + max);
+//            System.out.println("-----------------Key----------------\n"+keys.size()+"--------------------------------\n"+"mac:"+max);
+            if (keysInt.contains(max)) {
+//                 System.out.println("weightSort.get(max).size():" + weightSort.get(max).size());
+                for (int i = 0; i < weightSort.get(max).size() && numberOfWords.size() < number_of_words; i++) {
+                    //@todo à retirer un fois terminé
+//                    System.out.println("max:" + max + " i: " + i + " weightSort(max): " + weightSort.size() +
+//                           " weightSort(i)" + weightSort.get(max).size());
+                    numberOfWords.add(weightSort.get(max).get(i));
+                }
+            }
             max--;
+
         }
+//        System.out.println("numberOfWords=>=>=>=>=>=>=>"+numberOfWords.size());
         return  numberOfWords;
     }
 
@@ -198,7 +218,9 @@ public class Dico {
         HashMap<Integer,ArrayList<String>> distances = new HashMap<>();
         List<Integer> keys = new ArrayList<>();
 
+    //    System.out.println("words:"+words);
         for(String word : words) {
+          //  System.out.println("sa bug par là ? ");
             int key = distanceOfWords(word, originalWord);
             if(!distances.containsKey(key)) {
                 ArrayList<String> mots = new ArrayList<>();
@@ -206,17 +228,25 @@ public class Dico {
                 distances.put(key, mots);
                 keys.add(key);
             }else {
-                System.out.println("key:"+ key +"\n word:" +word +"\n distances:" + distances);
-                distances.get(key).add(word);
+//                System.out.println("key:"+ key +"\n word:" +word +"\n distances:" + distances);
+//                distances.get(key).add(word);
             }
         }
         keys.sort(Collections.reverseOrder());
         ArrayList<String> result = new ArrayList<>();
-        for(int i=0; i<keys.size() && result.size()<precision; i++)
-            for(int k=0; k<distances.get(keys.get(i)).size() && result.size()<precision && k<distances.get(i).size(); k++) {
-                System.out.println("i:"+i+" k:"+k+" distances(i):"+distances.size()+" distances.get(i)(k):"+distances.get(i).size());
-                result.add(distances.get(i).get(k));
+//        System.out.println("result.size()"+result.size()+"\n (result.size()<precision):"+(result.size()<precision)
+//        +"\nkeys.size():"+keys.size()+"\n");
+        for(int i=1; i<keys.size() && result.size()<precision; i++) {
+            if(keys.contains(i)) {
+             //   System.out.println("i:" + i + " distances(i):" + distances.size() + " distances.get(i)(k):" + distances.get(i));
+                for (int k = 0; k < distances.get(keys.get(i)).size()
+                        && result.size() < precision
+                        && k < distances.get(i).size(); k++) {
+                    //   System.out.println("i:" + i + " k:" + k + " distances(i):" + distances.size() + " distances.get(i)(k):" + distances.get(i).size());
+                    result.add(distances.get(i).get(k));
+                }
             }
+        }
         return result;
     }
 
@@ -234,13 +264,15 @@ public class Dico {
         if(isContain(stringOriginal))
             System.out.println(stringOriginal);
         else{
-            System.out.println(stringOriginal+"suggestion : ");
-            ArrayList<String> wordSimilar = similarWords(stringOriginal,100);
-
-            ArrayList<String> strings =  foundBestSimilars(wordSimilar,5,stringOriginal);
+            ArrayList<String> wordsSimilar = similarWords(stringOriginal,100);
+//            System.out.println("baahhh ou regarde ça!"+wordsSimilar);
+            ArrayList<String> strings =  foundBestSimilars(wordsSimilar,5,stringOriginal);
+           System.out.println(strings);
+            String suggestion ="";
             for(String word : strings){
-                System.out.println(word);
+                suggestion = suggestion+" ; "+word;
             }
+            System.out.println(stringOriginal+" :faux: suggestion { "+suggestion+"}");
         }
     }
 

@@ -267,3 +267,5 @@ volontier
 voluptes
 vraissemblable
 waggon
+wagon
+bateau
