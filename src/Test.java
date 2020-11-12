@@ -6,7 +6,8 @@ public class Test {
 
     public Test() throws IOException {
        // createTrigrammesTEST();
-        getListWordByTrigrammeTEST();
+       // getListWordByTrigrammeTEST();
+         buildTEST();
 
     }
 
@@ -25,7 +26,6 @@ public class Test {
         }
         return trigrammes;
     }
-
 
     /**
      *  Retourne un tableau des listes des mots ayant un trigramme commun
@@ -46,6 +46,20 @@ public class Test {
         return wordsByTrigramme.get(trigramme);
     }
 
+
+    public static HashMap<String,ArrayList<String>> build(String word, HashMap<String, ArrayList<String>> wordsByTrigramme) {
+        ArrayList<String> trigrammes = (createTrigrammes(word));
+        for (String trigramme : trigrammes) {
+            if (!wordsByTrigramme.containsKey(trigramme)) {
+                ArrayList<String> words = new ArrayList<>();
+                words.add(word);
+                wordsByTrigramme.put(trigramme, words);
+            } else
+                wordsByTrigramme.get(trigramme).add(word);
+        }
+        return wordsByTrigramme;
+
+    }
     // ========== Les fonctions de TEST ==========
     public static void createTrigrammesTEST(){
         ArrayList<String> words= createTrigrammes("bateau");
@@ -58,8 +72,14 @@ public class Test {
         System.out.println("createTrigrammesTEST: "+(words == results));
     }
 
-    private void buildTEST() throws IOException {
-        Dico dico = new Dico("src/test.txt");
+    private static void buildTEST() throws IOException {
+        // Dico dico = new Dico("src/test.txt");
+        HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
+        wordsByTrigramme =  build("fille",wordsByTrigramme);
+        wordsByTrigramme= build("filet",wordsByTrigramme);
+        System.out.println("build= "+wordsByTrigramme);
+
+
     }
 
     private void getListWordByTrigrammeTEST(){
