@@ -110,8 +110,8 @@ public class Dico {
                 }
                 else {
                     weight.replace(word, weight.get(word) + 1);
-                    if(max < weight.get(word)+1)
-                        max = weight.get(word)+1;
+                    if(max < weight.get(word))
+                        max = weight.get(word);
                 }
             }
         }

@@ -9,7 +9,8 @@ public class Test {
        // createTrigrammesTEST();
         // buildTEST();
        // getListWordByTrigrammeTEST();
-        arrayListsOfSimilarsTrigrammesTEST();
+       // arrayListsOfSimilarsTrigrammesTEST();
+        filterNumberOfdWordTEST();
     }
 
 
@@ -62,7 +63,49 @@ public class Test {
 
     }
 
+    public static ArrayList<String> filterNumberOfdWord(ArrayList<ArrayList<String>> lists, int number_of_words){
+        HashMap <String,Integer> weight = new HashMap<>();
+        HashMap <Integer, ArrayList<String>> weightSort = new HashMap<>();
+        ArrayList<String> keys = new ArrayList<>();
+        int max=1;
 
+        //Crée un hashmap< word, count>
+
+        for(ArrayList<String> list : lists){
+            for(String word : list){
+                if(! weight.containsKey(word)) {
+                    weight.put(word, 1);
+                    keys.add(word);
+                }
+                else {
+                    weight.replace(word, weight.get(word) + 1);
+                    if(max < weight.get(word))
+                        max = weight.get(word);
+                }
+            }
+        }
+
+        //inverse hasmap< mot, nb>  <nb, mots>
+        for(String key: keys){
+            //on regarde si le poid possède déjà un clef
+            if(! weightSort.containsKey(weight.get(key))) {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(key);
+                weightSort.put(weight.get(key),list);
+            }
+            else {
+                weightSort.get(weight.get(key)).add(key);
+            }
+        }
+
+        ArrayList<String> numberOfWords = new ArrayList<>();
+        while(numberOfWords.size()<number_of_words || max==-1){
+            for(int i=0; i<  weightSort.get(max).size() && numberOfWords.size()<number_of_words  ; i++)
+                numberOfWords.add( weightSort.get(max).get(i));
+            max--;
+        }
+        return  numberOfWords;
+    }
     // ========== Les fonctions de TEST ==========
     /**
      * test : ok
@@ -103,7 +146,7 @@ public class Test {
         printArray(getListWordByTrigramme("bat",wordsByTrigramme));
     }
     /**
-     * test : ?
+     * test : ok
      */
     private void arrayListsOfSimilarsTrigrammesTEST() throws IOException {
         ArrayList<String> trigrammes= new ArrayList<>() ;
@@ -117,6 +160,50 @@ public class Test {
         String[] test3 = {"bateau" ,"batard", "batiment"};
         wordsByTrigramme.put("bat", createArrayWith(test3));
         System.out.println( arrayListsOfSimilarsTrigrammes( trigrammes, wordsByTrigramme) );
+    }
+
+    private static void filterNumberOfdWordTEST(){
+        //bat
+        String[] strings1 = {"bateau","batiment","bastille"};
+        ArrayList<String> list1 = createArrayWith(strings1);
+        //ate
+        String[] strings2 = {"bateau","mate","rate", "pate"};
+        ArrayList<String> list2 = createArrayWith(strings2);
+        //tea
+        String[] strings3 = {"bateau","poteau"};
+        ArrayList<String> list3 = createArrayWith(strings3);
+        ArrayList<ArrayList<String>> lists = new ArrayList<>();
+        lists.add(list1);
+        lists.add(list2);
+        lists.add(list3);
+        int number_of_words = 2;
+
+       // ArrayList<String> result = filterNumberOfdWord( lists , number_of_words);
+        forOneTEST(lists);
+    }
+
+    private static void forOneTEST(ArrayList<ArrayList<String>> lists){
+        HashMap <String,Integer> weight = new HashMap<>();
+        ArrayList<String> keys = new ArrayList<>();
+        int max=1;
+
+        //Crée un hashmap< word, count>
+        for(ArrayList<String> list : lists){
+            for(String word : list){
+                if(! weight.containsKey(word)) {
+                    weight.put(word, 1);
+                    keys.add(word);
+                }
+                else {
+                    weight.replace(word, weight.get(word) + 1);
+                    if(max < weight.get(word))
+                        max = weight.get(word);
+                }
+            }
+        }
+
+        System.out.println("max:"+max + "\n keys"+keys+"\n weight"+weight);
+
     }
 
     // ============= Tools =========
