@@ -5,12 +5,13 @@ import java.util.HashSet;
 
 public class Dico {
 
+    //peu être à retirer ?
     private HashSet words = new HashSet();
     private HashMap<String, ArrayList<String>> wordsByTrigramme = new HashMap<>();
 
-    public Dico() throws IOException {
+    public Dico(String fileName) throws IOException {
         //lecture doc
-        String file="src/dico.txt";
+        String file=fileName;
 
         //créer dictionnaire
         Buffer document = new Buffer();

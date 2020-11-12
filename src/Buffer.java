@@ -33,7 +33,7 @@ class Buffer
         while ((ligne = lecteurAvecBuffer.readLine()) != null) {
             lignes.add(ligne);
             /*@todo à retirer une fois fini */
-            System.out.println(ligne);
+           // System.out.println(ligne);
         }
         lecteurAvecBuffer.close();
         return lignes;
