@@ -12,13 +12,18 @@ public class main {
 
      public static void main(String[] args) throws IOException {
 
-      //   Dico dico= new Dico();
+         Dico dico= new Dico();
+
+
         /* Inscrire ici le mot à chercher : */
          ArrayList<String> trigrammes = createTrigrammes("bateau");
 
-       //  String mot1 = "boulle", mot2 = "bil";
+         ArrayList<String> similars = dico.similarWords("bateau",10);
 
-      //   System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
+         for(String similar : similars)
+             System.out.println(similar);
+         //  String mot1 = "boulle", mot2 = "bil";
+         // System.out.println("Distance: "+ distanceOfWords(mot1,mot2));
 
 
     }
@@ -27,25 +32,6 @@ public class main {
          return mot.contains(trigramme);
     }
 
-    /**
-     *  Retourne un tableau des lites des mots ayant un trigramme commun
-     *  en fonction d'un tableau de trigramme donné
-     * @param trigrammes
-     * @return
-     * @throws IOException
-     */
-    public ArrayList<ArrayList<String>> arrayListsOfSimilarsTrigrammes(ArrayList<String> trigrammes) throws IOException {
-        ArrayList<ArrayList<String>> listsOfSimilarsTrigrammes = new ArrayList<>();
-         for(String trigramme : trigrammes){
-             listsOfSimilarsTrigrammes.add(getListOfWordsToDico(trigramme));
-         }
-         return listsOfSimilarsTrigrammes;
-    }
-
-    private ArrayList<String> getListOfWordsToDico(String trigramme) throws IOException {
-        Dico dico = new Dico();
-        for(String word : dico.)
-    }
 
     /**
      * Create an array of trigramme of word
