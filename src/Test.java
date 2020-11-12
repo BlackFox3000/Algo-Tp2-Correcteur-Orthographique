@@ -10,7 +10,8 @@ public class Test {
         // buildTEST();
        // getListWordByTrigrammeTEST();
        // arrayListsOfSimilarsTrigrammesTEST();
-        filterNumberOfdWordTEST();
+       // filterNumberOfdWordTEST();
+       // forTwoTEST
     }
 
 
@@ -205,7 +206,32 @@ public class Test {
         System.out.println("max:"+max + "\n keys"+keys+"\n weight"+weight);
 
     }
-
+    private static void forTwoTEST (){
+        HashMap <String,Integer> weight = new HashMap<>();
+        weight.put("bateau",4);
+        weight.put("rateau",3);
+        weight.put("gateau",3);
+        weight.put("pastis",1);
+        HashMap <Integer, ArrayList<String>> weightSort = new HashMap<>();
+        ArrayList<String> keys = new ArrayList<>();
+        keys.add("bateau");
+        keys.add("rateau");
+        keys.add("gateau");
+        keys.add("pastis");
+        int max=4;
+        for(String key: keys){
+            //on regarde si le poid possède déjà un clef
+            if(! weightSort.containsKey(weight.get(key))) {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(key);
+                weightSort.put(weight.get(key),list);
+            }
+            else {
+                weightSort.get(weight.get(key)).add(key);
+            }
+        }
+        System.out.println("max:"+max+"\n keys"+keys+"\n weight"+weight+" \n Weigthsort : "+weightSort);
+    }
     // ============= Tools =========
 
     public static void printArray(ArrayList<String> arrayList){
